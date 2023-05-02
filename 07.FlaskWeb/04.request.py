@@ -13,7 +13,7 @@ def hello():
 # localhost:5000/area?pi=3.14&radius=5
 @app.route('/area')                     # 아무런 얘기가 없으면 GET 방식
 def area():
-    pi = request.args.get('pi')
+    pi = request.args.get('pi', '3.14159')
     radius = request.values['radius']
     a = float(pi) * float(radius) ** 2
     return f'<h1>pi={pi}, radius={radius}, area={a}</h1>'

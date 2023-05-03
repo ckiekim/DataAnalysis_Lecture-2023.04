@@ -34,7 +34,7 @@ def hot_places(places, app):
     df['경도'] = lng_list
 
     # map 그리기
-    map = folium.Map(location=[df.위도.mean(), df.경도.mean()], zoom_start=11)
+    map = folium.Map(location=[df.위도.mean(), df.경도.mean()], zoom_start=12)
     for i in df.index:
         folium.Marker(
             location=[df.위도[i], df.경도[i]],

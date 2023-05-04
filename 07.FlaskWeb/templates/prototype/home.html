@@ -3,7 +3,5 @@
 {% block weather %}{{ weather | safe() }}{% endblock %}
 {% block subtitle %}Home{% endblock %}
 {% block content %} 
-    <div>
-        홈 화면입니다.
-    </div>
+    <img src="{{url_for('static', filename='img/home.jpg')}}" width="100%">
 {% endblock %}

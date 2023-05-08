@@ -13,33 +13,7 @@
         * { font-family: 'Noto Sans KR', sans-serif; }
         a { text-decoration: none; }
     </style>
-    <script>
-        function changeQuote() {
-            $.ajax({
-                type: 'GET',
-                url: '/change_quote', 
-                data: ' ',              // 서버로 전달할 데이터
-                success: function(msg) {        // msg: 서버로부터 받은 데이터
-                    $('#quoteMsg').html(msg);
-                }
-            });
-        }
-        function changeAddr() {
-            $('#addrInput').attr('class', 'mt-2');      // input box가 보이게
-        }
-        function addrSubmit() {
-            $('#addrInput').attr('class', 'mt-2 d-none');   // input box가 안보이게
-            let addr = $('#addrInputTag').val();
-            $.ajax({
-                type: 'GET',
-                url: '/change_addr',
-                data: {addr: addr},
-                success: function(msg) {
-                    $('#addr').html(msg);
-                }
-            });
-        }
-    </script>
+    <script src="{{url_for('static', filename='js/ajax.js')}}"></script>
     {% block additional_head %}{% endblock %}
 </head>
 <body>
@@ -92,14 +66,15 @@
                         <img src="{{url_for('static', filename='img/addr.png')}}" height="16" class="me-2">
                     </a>
                         <span id="addr">{{ addr }}</span>
-                        <a href="#"><span class="badge bg-secondary">날씨</span></a><br>
+                        <a href="javascript:changeWeather()"><span class="badge bg-secondary">날씨</span></a>
                     <div id="addrInput" class="mt-2 d-none">
-                        <input type="text" id="addrInputTag" 
-                            class="form-control form-control-sm">
+                        <input type="text" id="addrInputTag" class="form-control form-control-sm"
+                            onkeyup="if(window.event.keyCode==13) {addrSubmit()}">
                         <a href="javascript:addrSubmit()">
                             <span class="badge bg-primary">확인</span>
                         </a>
                     </div>
+                    <div id="weather"></div>
                     <button class="btn btn-sm btn-outline-primary mt-3">Edit Profile</button>
                 </div>
             </div>

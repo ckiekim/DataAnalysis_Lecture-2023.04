@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from weather_util import get_weather, get_weather_by_coord
 import crawl_util as cu
 import map_util as mu
@@ -6,19 +6,11 @@ import image_util as iu
 import os, random
 
 app = Flask(__name__)
+app.secret_key = 'qwert12345'
+app.config['SESSION_COOKIE_PATH'] = '/'
 
 # flask 2.3 에서는 이 코드만 사용 가능
-with app.app_context():
-    global quote, quotes            # quote, quotes 변수를 전역 변수로 만들어 줌
-    global addr
-    filename = os.path.join(app.static_folder, 'data/todayQuote.txt')
-    with open(filename, encoding='utf-8') as f:
-        quotes = f.readlines()
-    quote = random.sample(quotes, 1)[0]
-    addr = '수원시 장안구'
-
-""" @app.before_first_request
-def before_first_request():
+""" with app.app_context():
     global quote, quotes            # quote, quotes 변수를 전역 변수로 만들어 줌
     global addr
     filename = os.path.join(app.static_folder, 'data/todayQuote.txt')
@@ -27,17 +19,31 @@ def before_first_request():
     quote = random.sample(quotes, 1)[0]
     addr = '수원시 장안구' """
 
+@app.before_first_request
+def before_first_request():
+    global quote, quotes            # quote, quotes 변수를 전역 변수로 만들어 줌
+    global addr
+    filename = os.path.join(app.static_folder, 'data/todayQuote.txt')
+    with open(filename, encoding='utf-8') as f:
+        quotes = f.readlines()
+    quote = random.sample(quotes, 1)[0]
+    session['quote'] = quote
+    addr = '수원시 장안구'
+    session['addr'] = addr
+
 # for AJAX  #############################
 @app.route('/change_quote')
 def change_quote():
     global quote
     quote = random.sample(quotes, 1)[0]
+    session['quote'] = quote
     return quote
 
 @app.route('/change_addr')
 def change_addr():
     global addr
     addr = request.args.get('addr')
+    session['addr'] = addr
     return addr
 
 @ app.route('/weather')

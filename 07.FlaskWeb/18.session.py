@@ -3,11 +3,14 @@ from weather_util import get_weather, get_weather_by_coord
 import crawl_util as cu
 import map_util as mu
 import image_util as iu
-import os, random
+import os, random, json
+from user import user_bp
 
 app = Flask(__name__)
 app.secret_key = 'qwert12345'
 app.config['SESSION_COOKIE_PATH'] = '/'
+
+app.register_blueprint(user_bp, url_prefix='/user')
 
 # flask 2.3 에서는 이 코드만 사용 가능
 """ with app.app_context():
@@ -30,6 +33,7 @@ def before_first_request():
     session['quote'] = quote
     addr = '수원시 장안구'
     session['addr'] = addr
+
 
 # for AJAX  #############################
 @app.route('/change_quote')
@@ -67,11 +71,6 @@ def home():
     menu = {'ho':1, 'us':0, 'cr':0, 'sc':0}
     return render_template('prototype/home.html', menu=menu, weather=get_weather(app),
                            quote=quote, addr=addr)
-
-@app.route('/user')
-def user():
-    menu = {'ho':0, 'us':1, 'cr':0, 'sc':0}
-    return redirect('/schedule')
 
 @app.route('/interpark')
 def interpark():

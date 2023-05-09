@@ -18,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
-            <img src="{{ url_for('static'), filename='img/ck-logo.png'}}" style="height:60px;" class="rounded-3 mx-2">
+            <img src="{{ url_for('static', filename='img/ck-logo.png') }}" style="height:60px;" class="rounded-3 mx-2">
             <div class="p-2 bg-dark justify-content-center rounded">
                 <img src="https://picsum.photos/1500/200" width="100%">
             </div>
@@ -57,4 +57,12 @@
             <div class="col-4"></div>
         </div>
     </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                alert("{{ messages[-1] }}")
+            </script>
+        {% endif %}
+    {% endwith %}
 </body>
+</html>

@@ -104,6 +104,13 @@
             </span>
         </div>
     </nav>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                alert("{{ messages[-1] }}")
+            </script>
+        {% endif %}
+    {% endwith %}
     {% block additional_body %}{% endblock %}
 </body>
 </html>

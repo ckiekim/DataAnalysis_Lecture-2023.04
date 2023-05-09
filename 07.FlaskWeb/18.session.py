@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from weather_util import get_weather, get_weather_by_coord
 import crawl_util as cu
 import map_util as mu
@@ -101,6 +101,12 @@ def siksin():
 
 @app.route('/schedule')
 def schedule():
+    try:
+        _ = session['uid']
+    except:
+        flash('스케쥴을 확인하려면 로그인하여야 합니다.')
+        return redirect('/user/login')
+    
     menu = {'ho':0, 'us':0, 'cr':0, 'sc':1}
     return render_template('prototype/schedule.html', menu=menu, weather=get_weather(app), 
                            quote=quote, addr=addr)
